@@ -1,1 +1,6 @@
-"phase zero/*.csv"
+phase zero/*.csv
+.DS_Store
+__pycache__/
+*.pyc
+data/
+api_data_aadhar_*/
