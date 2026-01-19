@@ -17,8 +17,7 @@
 # # HeatMap baby
 
 # %%
-# MODIFICATION: Import processed data from book1
-# This fixes the "Absolute Path" crash and ensures consistency.
+# OPTIMIZATION: Import processed data from book1 instead of reloading raw files.
 from book1 import district_df
 
 import numpy as np
@@ -32,10 +31,11 @@ sns.set_style("whitegrid")
 
 # %% [markdown]
 # ## Re-Aggregate to District Level
-# *Since book1 provides Pincode granularity, we roll it up to District level for State comparison.*
+# *Optimized: Rolling up granular Pincode data to District level for State comparison.*
 
 # %%
 # 1. Group Pincodes back into Districts
+# We sum the specific columns needed for the ratio calculation
 district_agg = district_df.groupby(['state', 'district'])[[
     'total_enrolments', 'demo_activity', 'bio_activity'
 ]].sum().reset_index()
@@ -65,7 +65,7 @@ plot_data = district_agg.copy()
 if 'district' in plot_data.columns:
     plot_data['district'] = plot_data['district'].astype(str).str.replace('?', '-')
 
-# Fix State Names
+# Fix State Names (Title Case, Strip, and Specific Replacements)
 plot_data['state'] = plot_data['state'].str.title().str.strip()
 plot_data['state'] = plot_data['state'].replace({
     'Westbengal': 'West Bengal',
